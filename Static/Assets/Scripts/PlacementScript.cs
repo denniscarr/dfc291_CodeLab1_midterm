@@ -15,8 +15,8 @@ public class PlacementScript : MonoBehaviour {
 
 		while (!placed)
 		{
-			if (gameObject.tag == "Obstacle") {
-				
+			if (gameObject.tag == "Obstacle")
+            {	
 				// Get my size
 				newScale.x = Random.Range (lgn.obstacleMinSize, lgn.obstacleMaxSize);
 				newScale.y = transform.localScale.y;
@@ -27,9 +27,12 @@ public class PlacementScript : MonoBehaviour {
 				newPostion.y = transform.localPosition.y;
 				newPostion.z = Random.Range (-lgn.levelSize + newScale.z / 2, lgn.levelSize - newScale.z / 2);
 
-				// Test this location
-				Collider[] overlaps = Physics.OverlapBox (newPostion, newScale * 0.6f);
-				foreach (Collider c in overlaps) {
+				// Test this location with an overlap box that is high enough to catch the player in midair.
+                // Also make it a little bit larger than the actual obstacle.
+				Collider[] overlaps = Physics.OverlapBox (newPostion, new Vector3(newScale.x * 0.6f, 400, newScale.z * 0.6f));
+
+				foreach (Collider c in overlaps)
+                {
 					if (c.tag == "Player" || c.tag == "Enemy") {
 						print ("Not good");
 						placed = false;
@@ -39,8 +42,8 @@ public class PlacementScript : MonoBehaviour {
 				}
 			}
 
-			else if (gameObject.tag == "Enemy") {
-				
+			else if (gameObject.tag == "Enemy")
+            {	
 				// Get my position
 				newPostion.x = Random.Range(-lgn.levelSize + transform.localScale.x/2, lgn.levelSize - transform.localScale.x/2);
 				newPostion.y = transform.position.y;
@@ -48,7 +51,8 @@ public class PlacementScript : MonoBehaviour {
 
 				// Test this location
 				Collider[] overlaps = Physics.OverlapSphere (newPostion, transform.localScale.x);
-				foreach (Collider c in overlaps) {
+				foreach (Collider c in overlaps)
+                {
 					if (c.tag == "Player" || c.tag == "Enemy" || c.tag == "Obstacle") {
 						print ("Not good");
 						placed = false;

@@ -12,10 +12,14 @@ public class LevelGenScript : MonoBehaviour {
 	public GameObject enemyPrefab;
 	public GameObject obstaclePrefab;
 
-	public Transform playerSpawnPoint;
+	Transform playerSpawnPoint;
+    Transform player;
+    Transform floor;
 
 	public void Awake() {
 		playerSpawnPoint = GameObject.Find ("Player Spawn Point").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        floor = GameObject.Find("Floor").transform;
 	}
 		
 
@@ -41,8 +45,8 @@ public class LevelGenScript : MonoBehaviour {
 			Instantiate (enemyPrefab);
 		}
 
-		GameObject.Find ("FPSController").transform.position = playerSpawnPoint.position;
-		GameObject.Find ("Floor").GetComponent<MeshCollider> ().enabled = true;
+		player.transform.position = playerSpawnPoint.position;
+		floor.GetComponent<MeshCollider> ().enabled = true;
 		GameObject.Find ("Game Manager").GetComponent<BatchBillboardScript> ().ReupdateBillboards ();
 	}
 }

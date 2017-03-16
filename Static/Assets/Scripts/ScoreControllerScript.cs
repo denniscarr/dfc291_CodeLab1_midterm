@@ -3,10 +3,12 @@ using System.Collections;
 
 public class ScoreControllerScript : MonoBehaviour {
 
+    // Score display
 	public int score = 0;
 	public TextMesh scoreDisplay;
 	public TextMesh multNumber;
 
+    // Multiplier bar variables.
 	public GameObject multiplierBar;
 	public float multBarStartVal = 0.4f;
 	public float multBarBaseDecay = 0.01f;
@@ -23,6 +25,7 @@ public class ScoreControllerScript : MonoBehaviour {
 	public float bulletHitValue = 0.01f;
 	public float getHurtPenalty = 0.1f;
 
+    // Audio
 	public AudioSource levelWinAudio;
 	public AudioSource playerHurtAudio;
 
@@ -32,6 +35,10 @@ public class ScoreControllerScript : MonoBehaviour {
 	int numberOfObstaclesMin = 10;
 	int numberOfObstaclesMax = 50;
 	int currentEnemyAmt;
+    LevelGenScript levelGenerator;
+
+    // Misc
+    Transform floor;    // The floor of the game environment.
 
 	void Awake() {
 //		GameObject.Find ("Scripts").GetComponent<LevelGenScript> ().numberOfEnemies = numberOfEnemies;
@@ -53,6 +60,9 @@ public class ScoreControllerScript : MonoBehaviour {
 
 		scoreDisplay.text = score.ToString();
 		multNumber.text = multiplier.ToString () + "X";
+
+        floor = GameObject.Find("Floor").transform;
+        levelGenerator = GameObject.Find("Game Manager").GetComponent<LevelGenScript>();
 	}
 
 	void Update() {
@@ -78,13 +88,15 @@ public class ScoreControllerScript : MonoBehaviour {
 		);
 	}
 
-	void KilledEnemy() {
-
+	public void KilledEnemy()
+    {
+        // Increase the multiplier.
 		float multBarIncreaseAmt = enemyMultValue / multiplier;
 		multBarValCurr += multBarIncreaseAmt;
 
 		// See if we need to raise the multiplier level
-		if (multBarValCurr >= 1f) {
+		if (multBarValCurr >= 1f)
+        {
 			multiplier += 0.1f;
 			multBarStartValCurr = multBarStartVal/multiplier;
 			multBarValCurr = multBarStartValCurr;
@@ -98,7 +110,8 @@ public class ScoreControllerScript : MonoBehaviour {
 
 		// See if it's time to end level
 		currentEnemyAmt -= 1;
-		if (currentEnemyAmt <= 0) {
+		if (currentEnemyAmt <= 0)
+        {
 			EndLevel ();
 		}
 	}
@@ -106,8 +119,11 @@ public class ScoreControllerScript : MonoBehaviour {
 	void EndLevel()
 	{
 		levelWinAudio.Play ();
-		GameObject.Find ("Floor").GetComponent<MeshCollider> ().enabled = false;
-		levelNumber += 1;
+
+        // Disable the floor's collider so the player falls through it.
+		floor.GetComponent<MeshCollider> ().enabled = false;
+
+        levelNumber += 1;
 		numberOfEnemies = levelNumber*7;
 //		numberOfObstaclesMin *= levelNumber;
 //		numberOfObstaclesMax *= levelNumber;

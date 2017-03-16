@@ -41,6 +41,7 @@ public class EnemyScript : MonoBehaviour {
 	static int POST_SHOOTING = 4;
 	int currentState;
 
+    ScoreControllerScript scoreControllerScript;
 	Rigidbody rb;
 	Animator animator;
 
@@ -54,6 +55,8 @@ public class EnemyScript : MonoBehaviour {
 		currentState = PREPARING_TO_MOVE;
 
 		rb = GetComponent<Rigidbody> ();
+
+        scoreControllerScript = GameObject.Find("Score Display").GetComponent<ScoreControllerScript>();
 
 		animator = GetComponent<Animator> ();
 		animator.speed = 1.0f / preShotDelay;
@@ -166,12 +169,13 @@ public class EnemyScript : MonoBehaviour {
 	}
 
 
-	void Die() {
-
-		if (alive) {
+	void Die()
+    {
+		if (alive)
+        {
 			Instantiate (deathParticles, transform.position, Quaternion.identity);
 			Destroy (gameObject);
-			GameObject.Find ("Score Display").SendMessage ("KilledEnemy");
+            scoreControllerScript.KilledEnemy();
 			alive = false;
 		}
 	}
