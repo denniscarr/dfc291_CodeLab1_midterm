@@ -20,6 +20,10 @@ public class GunScript : MonoBehaviour {
     // How far bullets can travel.
     [SerializeField] float bulletRange = 500f;
 
+    // Bullet Color
+    [SerializeField] Color bulletColor1;
+    [SerializeField] Color bulletColor2;
+
     // How quickly the gun oscillates between extremes.
     [SerializeField] float oscSpeed = 0.3f;
     
@@ -42,6 +46,7 @@ public class GunScript : MonoBehaviour {
     float timeSinceLastShot;
     GameObject[] bullets;    // Holds references to all bullets.
     int bulletIndex = 0;
+    Color bulletColor = Color.yellow;  // The current color of the bullets.
 
 	void Start ()
     {
@@ -89,6 +94,9 @@ public class GunScript : MonoBehaviour {
 	{
         // Play shooting sound.
 		shootAudio.Play ();
+
+        // Get a new bullet color based on current sine
+        bulletColor = Color.Lerp(bulletColor1, bulletColor2, MyMath.Map(Mathf.Sin(Time.time * oscSpeed), -1f, 1f, 0f, 1f));
 
         // Fire the specified number of bullets.
 		for (int i = 0; i < numberOfBullets; i++)
@@ -152,6 +160,10 @@ public class GunScript : MonoBehaviour {
         {
 			bulletStrikeAudio.Play ();
 		}
+
+        // Set bullet color
+        bullets[bulletIndex].GetComponent<MeshRenderer>().material.color = bulletColor;
+        //bullets[bulletIndex].GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", bulletColor);
 
         // Fire bullet.
         bullets[bulletIndex].GetComponent<BulletScript>().GetFired(
