@@ -40,6 +40,7 @@ public class GunScript : MonoBehaviour {
     /* REFERENCES */
     ScoreControllerScript scoreControllerScript;
     Transform bulletSpawnTransform; // The point where bullets originate (ie the tip of the player's gun
+    Animator animator;
 
     /* MISC */
 
@@ -64,6 +65,8 @@ public class GunScript : MonoBehaviour {
 
         // Get a reference to the score controller.
         scoreControllerScript = FindObjectOfType<ScoreControllerScript>();
+
+        animator = GetComponent<Animator>();
 	}
 
 
@@ -74,6 +77,9 @@ public class GunScript : MonoBehaviour {
 		float burstsPerSecond = MyMath.Map (Mathf.Sin (Time.time*oscSpeed), -1f, 1f, burstsPerSecondMin, burstsPerSecondMax);
 		float inaccuracy = MyMath.Map (Mathf.Sin (Time.time*oscSpeed), -1f, 1f, inaccuracyMax, inaccuracyMin);
 		shootAudio.pitch = MyMath.Map (Mathf.Sin (Time.time * oscSpeed), -1f, 1f, 0.8f, 2f);
+
+        // Update gun animation state
+        animator.SetFloat("Gun State", Mathf.Sin(Time.time * oscSpeed));
 
         // Run shot timer.
         timeSinceLastShot += Time.deltaTime;
