@@ -11,17 +11,12 @@ public class ScreenScript : MonoBehaviour {
     {
         // Decrease health.
 		myHealth -= 1;
+        healthBlocks[myHealth].SetActive(false);
 
         // If health is now less than zero, trigger a game over.
         if (myHealth <= 0)
         {
             GameObject.Find("Game Manager").SendMessage("GameOver");
-        }
-
-        // Otherwise, stop displaying the corresponding health block.
-        else
-        {
-            healthBlocks[myHealth - 1].SetActive(false);
         }
     }
 }

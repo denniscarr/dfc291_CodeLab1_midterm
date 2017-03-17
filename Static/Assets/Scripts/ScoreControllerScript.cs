@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ScoreControllerScript : MonoBehaviour {
 
@@ -37,10 +39,16 @@ public class ScoreControllerScript : MonoBehaviour {
 	int currentEnemyAmt;
     LevelGenScript levelGenerator;
 
+    // Used for high score list.
+    List<ScoreEntry> highScores;
+    public Transform highScoreList;
+    public Transform highScoreScreen;
+
     // Misc
     Transform floor;    // The floor of the game environment.
 
-	void Awake() {
+	void Awake()
+    {
 //		GameObject.Find ("Scripts").GetComponent<LevelGenScript> ().numberOfEnemies = numberOfEnemies;
 //		GameObject.Find ("Scripts").GetComponent<LevelGenScript> ().numberOfObstacles = Random.Range(numberOfObstaclesMin, numberOfObstaclesMax);
 //		GameObject.Find ("Scripts").GetComponent<LevelGenScript> ().SendMessage ("Generate");
@@ -63,6 +71,13 @@ public class ScoreControllerScript : MonoBehaviour {
 
         floor = GameObject.Find("Floor").transform;
         levelGenerator = GameObject.Find("Game Manager").GetComponent<LevelGenScript>();
+
+        // Load high scores.
+        highScores = new List<ScoreEntry>();
+        highScoreList = GameObject.Find("High Score List").transform;
+        highScoreScreen = GameObject.Find("High Score Screen").transform;
+        //SaveHighScores();
+        ShowHighScores();
 	}
 
 	void Update() {
@@ -144,4 +159,67 @@ public class ScoreControllerScript : MonoBehaviour {
 		playerHurtAudio.Play ();
 		multBarValCurr -= getHurtPenalty;
 	}
+
+
+    // Loads high scores from player preferences into a List.
+    void LoadHighScores()
+    {
+        // Initialize 10 empty score entries in the highScore List.
+        for (int i = 0; i < 10; i++)
+        {
+            highScores.Add(new ScoreEntry("AAA", 0));
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            // Check to see if this score entry has previously been saved.
+            if (PlayerPrefs.GetString("HighScoreName" + i) != "")
+            {
+                highScores[i] = new ScoreEntry(PlayerPrefs.GetString("HighScoreName" + i), PlayerPrefs.GetInt("HighScoreNumber" + i));
+            }
+        }
+    }
+
+
+    void SaveHighScores()
+    {
+        for (int i = 0; i < 10; i++)
+        { 
+            PlayerPrefs.SetString("HighScoreName" + i, highScores[i].initials);
+            PlayerPrefs.SetInt("HighScoreNumber" + i, highScores[i].score);
+        }
+    }
+
+
+    void ShowHighScores()
+    {
+        LoadHighScores();
+
+        highScoreScreen.gameObject.SetActive(true);
+
+        string scoreList = "";
+
+        for (int i = 0; i < highScores.Count; i++)
+        {
+            scoreList += highScores[i].initials + ": " + highScores[i].score + "\n";
+        }
+
+        print(scoreList);
+        highScoreList.GetComponent<TextMesh>().text = scoreList;
+
+        SaveHighScores();
+    }
+
+
+    class ScoreEntry
+    {
+        public string initials;
+        public int score;
+
+        public ScoreEntry(string _initials, int _score)
+        {
+            initials = _initials;
+            score = _score;
+        }
+    }
 }

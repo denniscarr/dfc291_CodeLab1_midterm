@@ -36,10 +36,13 @@ public class GunScript : MonoBehaviour {
 	public AudioSource shootAudio;
 	public AudioSource bulletStrikeAudio;
 
+    public GameObject muzzleFlash;
+
 
     /* REFERENCES */
     ScoreControllerScript scoreControllerScript;
     Transform bulletSpawnTransform; // The point where bullets originate (ie the tip of the player's gun
+    Transform gunTipTransform;
     Animator animator;
 
     /* MISC */
@@ -62,6 +65,8 @@ public class GunScript : MonoBehaviour {
 
         // Get the point from which bullets will spawn.
 		bulletSpawnTransform = GameObject.Find ("BulletSpawnPoint").transform;
+
+        gunTipTransform = GameObject.Find("Tip").transform;
 
         // Get a reference to the score controller.
         scoreControllerScript = FindObjectOfType<ScoreControllerScript>();
@@ -100,6 +105,10 @@ public class GunScript : MonoBehaviour {
 	{
         // Play shooting sound.
 		shootAudio.Play ();
+
+        // Show muzzle flash.
+        GameObject _muzzleFlash = Instantiate(muzzleFlash, gunTipTransform, false);
+        //_muzzleFlash.transform.localScale = gunTipTransform.localScale;
 
         // Get a new bullet color based on current sine
         bulletColor = Color.Lerp(bulletColor1, bulletColor2, MyMath.Map(Mathf.Sin(Time.time * oscSpeed), -1f, 1f, 0f, 1f));
