@@ -24,7 +24,7 @@ public class ScreenShakeScript : MonoBehaviour {
 			shake = 0.0f;
 
             // Move back towards original position.
-            if (Vector3.Distance(transform.position, originalPosition) > 0.1f)
+            if (Vector3.Distance(transform.position, originalPosition) > 0.01f)
             {
                 Vector3 newPosition = Vector3.Lerp(transform.position, originalPosition, moveBackSpeed * Time.deltaTime);
                 transform.position = newPosition;

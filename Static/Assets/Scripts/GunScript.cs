@@ -107,8 +107,14 @@ public class GunScript : MonoBehaviour {
 		shootAudio.Play ();
 
         // Show muzzle flash.
-        GameObject _muzzleFlash = Instantiate(muzzleFlash, gunTipTransform, false);
-        //_muzzleFlash.transform.localScale = gunTipTransform.localScale;
+        GameObject _muzzleFlash = Instantiate(muzzleFlash);
+        _muzzleFlash.transform.position = gunTipTransform.position;
+        _muzzleFlash.transform.rotation = gunTipTransform.rotation;
+        _muzzleFlash.transform.localScale = new Vector3(
+            MyMath.Map(Mathf.Sin(Time.time * oscSpeed), -1f, 1f, 0.5f, 0.3f),
+            MyMath.Map(Mathf.Sin(Time.time * oscSpeed), -1f, 1f, 0.5f, 0.3f),
+            MyMath.Map(Mathf.Sin(Time.time * oscSpeed), -1f, 1f, 0.5f, 0.3f)
+            );
 
         // Get a new bullet color based on current sine
         bulletColor = Color.Lerp(bulletColor1, bulletColor2, MyMath.Map(Mathf.Sin(Time.time * oscSpeed), -1f, 1f, 0f, 1f));
