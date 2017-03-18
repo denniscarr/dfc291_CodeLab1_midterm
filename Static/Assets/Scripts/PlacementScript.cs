@@ -8,6 +8,8 @@ public class PlacementScript : MonoBehaviour {
 
 	void Start ()
 	{
+        placed = false;
+
 		lgn = GameObject.Find ("Game Manager").GetComponent<LevelGenScript> ();
 
 		Vector3 newPostion = transform.position;
@@ -45,23 +47,26 @@ public class PlacementScript : MonoBehaviour {
 			else if (gameObject.tag == "Enemy")
             {	
 				// Get my position
-				newPostion.x = Random.Range(-lgn.levelSize + transform.localScale.x/2, lgn.levelSize - transform.localScale.x/2);
+				newPostion.x = Random.Range(-lgn.levelSize + GetComponent<Collider>().bounds.extents.x, lgn.levelSize - GetComponent<Collider>().bounds.extents.x);
 				newPostion.y = transform.position.y;
-				newPostion.z = Random.Range(-lgn.levelSize + transform.localScale.z/2, lgn.levelSize - transform.localScale.z/2);
+				newPostion.z = Random.Range(-lgn.levelSize + GetComponent<Collider>().bounds.extents.z, lgn.levelSize - GetComponent<Collider>().bounds.extents.z);
 
-				// Test this location
-				Collider[] overlaps = Physics.OverlapSphere (newPostion, transform.localScale.x);
+                // Test this location
+                Collider[] overlaps = Physics.OverlapSphere(newPostion, GetComponent<Collider>().bounds.extents.x * 1.5f);
 				foreach (Collider c in overlaps)
                 {
-					if (c.tag == "Player" || c.tag == "Enemy" || c.tag == "Obstacle") {
-						print ("Not good");
+					if (c.tag == "Player" || c.tag == "Enemy" || c.tag == "Obstacle" || c.tag == "Wall") {
+						print ("Not good" + c.tag);
 						placed = false;
 					} else {
+                        print("Good Stuff! " + c.tag);
 						placed = true;
 					}
 				}
 			}
 		}
+
+        print("Made it");
 
 		transform.position = newPostion;
 		transform.localScale = newScale;

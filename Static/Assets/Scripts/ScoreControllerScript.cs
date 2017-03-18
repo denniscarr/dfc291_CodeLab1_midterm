@@ -119,12 +119,20 @@ public class ScoreControllerScript : MonoBehaviour {
 		score = Mathf.RoundToInt(score+enemyScoreValue * multiplier);
 		scoreDisplay.text = score.ToString ();
 
-		// See if it's time to end level
-		currentEnemyAmt -= 1;
+        // See if it's time to end level
+        currentEnemyAmt -= 1;
 		if (currentEnemyAmt <= 0)
         {
 			EndLevel ();
 		}
+
+        else if (currentEnemyAmt <= 4 && levelNumber != 0)
+        {
+            foreach (EnemyScript enemyScript in GameObject.FindObjectsOfType<EnemyScript>())
+            {
+                enemyScript.findHelper.SetActive(true);
+            }
+        }
 	}
 
 	void EndLevel()

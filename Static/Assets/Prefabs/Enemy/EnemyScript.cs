@@ -44,6 +44,7 @@ public class EnemyScript : MonoBehaviour {
     ScoreControllerScript scoreControllerScript;
 	Rigidbody rb;
 	Animator animator;
+    public GameObject findHelper;
 
 	bool alive = true;
 
