@@ -74,10 +74,6 @@ public class ScoreControllerScript : MonoBehaviour {
 
         // Load high scores.
         highScores = new List<ScoreEntry>();
-        highScoreList = GameObject.Find("High Score List").transform;
-        highScoreScreen = GameObject.Find("High Score Screen").transform;
-        //SaveHighScores();
-        ShowHighScores();
 	}
 
 	void Update() {

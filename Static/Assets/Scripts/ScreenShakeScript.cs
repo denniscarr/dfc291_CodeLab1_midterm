@@ -6,6 +6,7 @@ public class ScreenShakeScript : MonoBehaviour {
 	float shake = 0f;
 	float shakeAmount = 0.3f;
 	float decreaseFactor = 1.0f;
+    float moveBackSpeed = 0.3f;
 
 	Vector3 originalPosition;
 
@@ -21,9 +22,15 @@ public class ScreenShakeScript : MonoBehaviour {
 
 		} else {
 			shake = 0.0f;
-//			transform.position = originalPosition;
-		}
-	}
+
+            // Move back towards original position.
+            if (Vector3.Distance(transform.position, originalPosition) > 0.1f)
+            {
+                Vector3 newPosition = Vector3.Lerp(transform.position, originalPosition, moveBackSpeed * Time.deltaTime);
+                transform.position = newPosition;
+            }
+        }
+    }
 
 	void IncreaseShake(float increaseAmount) {
 		shake += increaseAmount;
