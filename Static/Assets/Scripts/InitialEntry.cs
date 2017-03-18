@@ -16,6 +16,7 @@ public class InitialEntry : MonoBehaviour {
     int activeInitalIndex = 0;   // The initial which is currently being controlled by the player.
 
     public Color activeColor;   // The color of the letter when it is active.
+    public Color inactiveColor;
 
     float keyCooldown = 0.1f;   // How often a keypress is registered.
     float sinceLastKeypress = 0f;

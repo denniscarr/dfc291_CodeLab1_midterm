@@ -40,9 +40,9 @@ public class ScoreControllerScript : MonoBehaviour {
     LevelGenScript levelGenerator;
 
     // Used for high score list.
-    List<ScoreEntry> highScores;
-    public Transform highScoreList;
-    public Transform highScoreScreen;
+    public List<ScoreEntry> highScores;
+    [SerializeField] Transform highScoreList;
+    [SerializeField] Transform highScoreScreen;
 
     // Misc
     Transform floor;    // The floor of the game environment.
@@ -74,6 +74,7 @@ public class ScoreControllerScript : MonoBehaviour {
 
         // Load high scores.
         highScores = new List<ScoreEntry>();
+        LoadHighScores();
 	}
 
 	void Update() {
@@ -174,6 +175,7 @@ public class ScoreControllerScript : MonoBehaviour {
             highScores.Add(new ScoreEntry("AAA", 0));
         }
 
+        // Load saved high scores from PlayerPrefs.
         for (int i = 0; i < 10; i++)
         {
             // Check to see if this score entry has previously been saved.
@@ -215,7 +217,7 @@ public class ScoreControllerScript : MonoBehaviour {
     }
 
 
-    class ScoreEntry
+    public class ScoreEntry
     {
         public string initials;
         public int score;

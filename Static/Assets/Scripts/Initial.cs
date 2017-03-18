@@ -19,16 +19,17 @@ public class Initial : MonoBehaviour {
 
             else
             {
-                textMesh.color = Color.white;
+                textMesh.color = parentScript.inactiveColor;
             }
         }
     }
+
     [HideInInspector] public int charIndex;    // The character I am currently displaying.
 
     TextMesh textMesh;
     InitialEntry parentScript;
 
-    void Start()
+    void Awake()
     {
         textMesh = GetComponent<TextMesh>();
         parentScript = GetComponentInParent<InitialEntry>();
