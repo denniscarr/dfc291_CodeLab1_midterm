@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -80,6 +81,14 @@ public class ScoreControllerScript : MonoBehaviour {
 	}
 
 	void Update() {
+
+        if (highScoreScreen.gameObject.activeSelf)
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                SceneManager.LoadScene("mainScene");
+            }
+        }
 
 		// Apply decay to multiplier bar
 		multBarValCurr -= multBarDecayCurr*Time.deltaTime;

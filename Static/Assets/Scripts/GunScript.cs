@@ -44,6 +44,7 @@ public class GunScript : MonoBehaviour {
     Transform bulletSpawnTransform; // The point where bullets originate (ie the tip of the player's gun
     Transform gunTipTransform;
     Animator animator;
+    Animator parentAnimator;
 
     /* MISC */
 
@@ -51,6 +52,8 @@ public class GunScript : MonoBehaviour {
     GameObject[] bullets;    // Holds references to all bullets.
     int bulletIndex = 0;
     Color bulletColor = Color.yellow;  // The current color of the bullets.
+    Vector3 originalPosition;   // The original position of the gun (used for recoil).
+    Vector3 recoilPosition;
 
 	void Start ()
     {
@@ -72,7 +75,11 @@ public class GunScript : MonoBehaviour {
         scoreControllerScript = FindObjectOfType<ScoreControllerScript>();
 
         animator = GetComponent<Animator>();
-	}
+        parentAnimator = GetComponentInParent<Animator>();
+
+        originalPosition = transform.localPosition;
+        recoilPosition = new Vector3(0f, -3.68f, 10.68f);
+    }
 
 
 	void Update ()
@@ -105,6 +112,8 @@ public class GunScript : MonoBehaviour {
 	{
         // Play shooting sound.
 		shootAudio.Play ();
+
+        transform.parent.SendMessage("IncreaseShake", 0.1f);
 
         // Show muzzle flash.
         GameObject _muzzleFlash = Instantiate(muzzleFlash);
