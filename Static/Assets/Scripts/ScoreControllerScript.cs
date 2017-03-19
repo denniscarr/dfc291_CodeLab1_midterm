@@ -40,12 +40,14 @@ public class ScoreControllerScript : MonoBehaviour {
     LevelGenScript levelGenerator;
 
     // Used for high score list.
-    public List<ScoreEntry> highScores;
-    [SerializeField] Transform highScoreList;
+    public List<ScoreEntry> highScoreList;
+    [SerializeField] Transform highScoreListText;
     [SerializeField] Transform highScoreScreen;
 
     // Misc
     Transform floor;    // The floor of the game environment.
+    [SerializeField] Transform gameOverScreen;
+    [SerializeField] Transform nameEntry;
 
 	void Awake()
     {
@@ -73,7 +75,7 @@ public class ScoreControllerScript : MonoBehaviour {
         levelGenerator = GameObject.Find("Game Manager").GetComponent<LevelGenScript>();
 
         // Load high scores.
-        highScores = new List<ScoreEntry>();
+        highScoreList = new List<ScoreEntry>();
         LoadHighScores();
 	}
 
@@ -169,10 +171,14 @@ public class ScoreControllerScript : MonoBehaviour {
     // Loads high scores from player preferences into a List.
     void LoadHighScores()
     {
+        highScoreList.Clear();
+
         // Initialize 10 empty score entries in the highScore List.
         for (int i = 0; i < 10; i++)
         {
-            highScores.Add(new ScoreEntry("AAA", 0));
+            highScoreList.Add(new ScoreEntry("AAA", 0));
+
+            Debug.Log(highScoreList[i]);
         }
 
         // Load saved high scores from PlayerPrefs.
@@ -181,7 +187,7 @@ public class ScoreControllerScript : MonoBehaviour {
             // Check to see if this score entry has previously been saved.
             if (PlayerPrefs.GetString("HighScoreName" + i) != "")
             {
-                highScores[i] = new ScoreEntry(PlayerPrefs.GetString("HighScoreName" + i), PlayerPrefs.GetInt("HighScoreNumber" + i));
+                highScoreList[i] = new ScoreEntry(PlayerPrefs.GetString("HighScoreName" + i), PlayerPrefs.GetInt("HighScoreNumber" + i));
             }
         }
     }
@@ -191,13 +197,13 @@ public class ScoreControllerScript : MonoBehaviour {
     {
         for (int i = 0; i < 10; i++)
         { 
-            PlayerPrefs.SetString("HighScoreName" + i, highScores[i].initials);
-            PlayerPrefs.SetInt("HighScoreNumber" + i, highScores[i].score);
+            PlayerPrefs.SetString("HighScoreName" + i, highScoreList[i].initials);
+            PlayerPrefs.SetInt("HighScoreNumber" + i, highScoreList[i].score);
         }
     }
 
 
-    void ShowHighScores()
+    public void ShowHighScores()
     {
         LoadHighScores();
 
@@ -205,15 +211,45 @@ public class ScoreControllerScript : MonoBehaviour {
 
         string scoreList = "";
 
-        for (int i = 0; i < highScores.Count; i++)
+        for (int i = 0; i < highScoreList.Count; i++)
         {
-            scoreList += highScores[i].initials + ": " + highScores[i].score + "\n";
+            scoreList += highScoreList[i].initials + ": " + highScoreList[i].score + "\n";
         }
 
-        print(scoreList);
-        highScoreList.GetComponent<TextMesh>().text = scoreList;
+        highScoreListText.GetComponent<TextMesh>().text = scoreList;
+    }
 
+
+    public void InsertScore(string initials)
+    {
+        LoadHighScores();
+
+        bool inserted = false;
+        for (int i = 0; i < highScoreList.Count; i++)
+        {
+            Debug.Log(highScoreList[i]);
+
+            // See if the current score is greater than this score on the list.
+            if (score > highScoreList[i].score)
+            {
+                if (!inserted)
+                {
+                    highScoreList.Insert(i, new ScoreEntry(initials, score));
+                    inserted = true;
+                }
+            }
+
+            else
+            {
+                highScoreList.RemoveAt(i);
+            }
+        }
+
+        // Stop showing game over screen and show high score list instead.
+        gameOverScreen.gameObject.SetActive(false);
+        nameEntry.gameObject.SetActive(false);
         SaveHighScores();
+        ShowHighScores();
     }
 
 

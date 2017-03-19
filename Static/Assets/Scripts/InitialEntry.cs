@@ -18,12 +18,18 @@ public class InitialEntry : MonoBehaviour {
     public Color activeColor;   // The color of the letter when it is active.
     public Color inactiveColor;
 
-    float keyCooldown = 0.1f;   // How often a keypress is registered.
+    float keyCooldown = 0.09f;   // How often a keypress is registered.
     float sinceLastKeypress = 0f;
+
+    ScoreControllerScript scoreController;
+    Transform gameOverScreen;
+    Transform nameEntry;
 
 
     void Start()
     {
+        scoreController = GameObject.Find("Score Display").GetComponent<ScoreControllerScript>();
+
         ActiveInitial.Active = true;
     }
 
@@ -34,7 +40,7 @@ public class InitialEntry : MonoBehaviour {
 
         /* PLAYER CONTROL */
 
-        if (sinceLastKeypress >= keyCooldown)
+        if (sinceLastKeypress >= keyCooldown && Input.anyKeyDown)
         {
             // If the player pressed up or down, change the character of the active initial.
             if (Input.GetAxisRaw("Vertical") == -1)
@@ -68,9 +74,36 @@ public class InitialEntry : MonoBehaviour {
                 ActiveInitial.Active = true;
             }
 
+            // If the player is finished they should press fire.
+            else if (Input.GetButtonDown("Fire1"))
+            {
+                // Go through each initial and add it to a string.
+                string enteredInitials = "";
+                bool cancel = false;
+                foreach(Initial initial in initials)
+                {
+                    if (initial.charIndex != 0)
+                    {
+                        enteredInitials += letters[initial.charIndex].ToString();
+                    }
+
+                    // If the player hasn't had time to enter their initials then go back.
+                    else
+                    {
+                        cancel = true;
+                    }
+                }
+
+                // Tell the score controller to add this entry to its score list and then close this screen.
+                if (!cancel)
+                {
+                    scoreController.InsertScore(enteredInitials);
+                    
+                }
+            }
+
             sinceLastKeypress = 0f;
         }
-
 	}
 
 

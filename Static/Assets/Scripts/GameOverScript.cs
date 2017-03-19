@@ -54,7 +54,7 @@ public class GameOverScript : MonoBehaviour {
         GameObject.Find("Final Score Number").GetComponent<TextMesh>().text = scoreController.score.ToString();
 
         // If this is a high score, show the name entry interface.
-        if (scoreController.score > scoreController.highScores[9].score)
+        if (scoreController.score > scoreController.highScoreList[9].score)
         {
             nameEntry.SetActive(true);
         }            // Enable cursor
@@ -77,7 +77,7 @@ public class GameOverScript : MonoBehaviour {
         GameObject.Find("Final Score Number").GetComponent<TextMesh>().text = scoreController.score.ToString();
 
         // If this is a high score, show the name entry interface.
-        if (scoreController.score > scoreController.highScores[9].score)
+        if (scoreController.score > scoreController.highScoreList[9].score)
         {
             nameEntry.SetActive(true);
         }
