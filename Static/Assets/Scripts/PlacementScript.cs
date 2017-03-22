@@ -63,10 +63,12 @@ public class PlacementScript : MonoBehaviour {
 						placed = true;
 					}
 				}
+
+                print(newPostion);
 			}
 		}
 
-        print("Made it");
+        //print("Made it");
 
 		transform.position = newPostion;
 		transform.localScale = newScale;

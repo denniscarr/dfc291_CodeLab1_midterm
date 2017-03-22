@@ -12,7 +12,7 @@ public class InitialEntry : MonoBehaviour {
             return initials[activeInitalIndex];
         }
     }
-    char[] letters = { '_', 'A', 'B', 'C', 'D', 'E', 'F', 'G' }; // All the letters my babies can display.
+    char[] letters = { '_', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' }; 
     int activeInitalIndex = 0;   // The initial which is currently being controlled by the player.
 
     public Color activeColor;   // The color of the letter when it is active.

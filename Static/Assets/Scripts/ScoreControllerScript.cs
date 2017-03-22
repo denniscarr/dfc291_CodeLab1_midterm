@@ -137,14 +137,6 @@ public class ScoreControllerScript : MonoBehaviour {
         {
 			EndLevel ();
 		}
-
-        else if (currentEnemyAmt <= 4 && levelNumber != 0)
-        {
-            foreach (EnemyScript enemyScript in GameObject.FindObjectsOfType<EnemyScript>())
-            {
-                enemyScript.findHelper.SetActive(true);
-            }
-        }
 	}
 
 	void EndLevel()
@@ -233,25 +225,38 @@ public class ScoreControllerScript : MonoBehaviour {
     {
         LoadHighScores();
 
-        bool inserted = false;
-        for (int i = 0; i < highScoreList.Count; i++)
+        //bool inserted = false;
+        //for (int i = 0; i < highScoreList.Count; i++)
+        //{
+        //    Debug.Log(highScoreList[i]);
+
+        //    // See if the current score is greater than this score on the list.
+        //    if (score > highScoreList[i].score)
+        //    {
+        //        if (!inserted)
+        //        {
+        //            highScoreList.Insert(i, new ScoreEntry(initials, score));
+        //            inserted = true;
+        //        }
+        //    }
+
+        //    else
+        //    {
+        //        highScoreList.RemoveAt(i);
+        //    }
+        //}
+
+        // Add and sort list
+        highScoreList.Add(new ScoreEntry(initials, score));
+        highScoreList.Sort(delegate (ScoreEntry b, ScoreEntry a)
         {
-            Debug.Log(highScoreList[i]);
+            return (a.score.CompareTo(b.score));
+        });
 
-            // See if the current score is greater than this score on the list.
-            if (score > highScoreList[i].score)
-            {
-                if (!inserted)
-                {
-                    highScoreList.Insert(i, new ScoreEntry(initials, score));
-                    inserted = true;
-                }
-            }
-
-            else
-            {
-                highScoreList.RemoveAt(i);
-            }
+        // Remove excess entries
+        for (int i = 10; i < highScoreList.Count; i++)
+        {
+            highScoreList.RemoveAt(i);
         }
 
         // Stop showing game over screen and show high score list instead.
