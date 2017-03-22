@@ -22,6 +22,6 @@ public class MainMenuScript : MonoBehaviour {
 	}
 
 	public void InfoButton() {
-		SceneManager.LoadScene (2);
+		SceneManager.LoadScene (1);
 	}
 }

@@ -13,6 +13,6 @@ public class MenuScript : MonoBehaviour {
 	public void MenuButton() {
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
-		SceneManager.LoadScene (1);
+		SceneManager.LoadScene (0);
 	}
 }
