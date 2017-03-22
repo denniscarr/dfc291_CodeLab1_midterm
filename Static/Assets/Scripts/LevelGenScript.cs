@@ -16,6 +16,7 @@ public class LevelGenScript : MonoBehaviour {
     Transform player;
     Transform floor;
 
+
 	public void Awake() {
 		playerSpawnPoint = GameObject.Find ("Player Spawn Point").transform;
         player = GameObject.FindGameObjectWithTag("Player").transform;

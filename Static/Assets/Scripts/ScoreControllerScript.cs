@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.FirstPerson;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -49,13 +50,18 @@ public class ScoreControllerScript : MonoBehaviour {
     Transform floor;    // The floor of the game environment.
     [SerializeField] Transform gameOverScreen;
     [SerializeField] Transform nameEntry;
+    [SerializeField] GameObject mainMenu;
 
 	void Awake()
     {
-//		GameObject.Find ("Scripts").GetComponent<LevelGenScript> ().numberOfEnemies = numberOfEnemies;
-//		GameObject.Find ("Scripts").GetComponent<LevelGenScript> ().numberOfObstacles = Random.Range(numberOfObstaclesMin, numberOfObstaclesMax);
-//		GameObject.Find ("Scripts").GetComponent<LevelGenScript> ().SendMessage ("Generate");
-	}
+        // Pause everything for menu.
+        foreach(GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy"))
+        {
+            enemy.GetComponent<EnemyScript>().enabled = false;
+        }
+        GameObject.Find("FPSController").GetComponent<FirstPersonController>().enabled = false;
+        GameObject.Find("Gun").GetComponent<GunScript>().enabled = false;
+    }
 
 	void Start()
 	{

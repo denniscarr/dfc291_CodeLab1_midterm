@@ -7,6 +7,8 @@ public class EnemyShotScript : MonoBehaviour {
 
 	Vector3 targetPosition;
 
+    public GameObject strikeParticles;
+
 	void Start () {
 		
 		// Get the player's current position and get a point way beyond that
@@ -31,11 +33,13 @@ public class EnemyShotScript : MonoBehaviour {
 
 		if (collider.tag == "Obstacle" || collider.tag == "Wall") {
 			Debug.Log ("Hit obstacle");
-			Destroy (gameObject);	
+            Instantiate(strikeParticles, transform.position, Quaternion.identity);
+            Destroy(gameObject);	
 		}
 
 		if (collider.tag == "Player") {
 
+            Instantiate(strikeParticles, transform.position, Quaternion.identity);
 			Destroy (gameObject);
 
 			// Play various pain animations
